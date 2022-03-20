@@ -1,8 +1,17 @@
 syntax = "proto3";
 
+option go_package = "./index";
+
 //定义索引服务接口
 service IndexService{
-  rpc AddItem(AddItemRequest) returns (AddItemResponse) {}
+  //add item 添加Item，同个主key可一次添加多个Item
+  rpc AddItem(AddItemReq) returns (AddItemRsp) {}
+  //delete item 删除Item，同个主Key可一次删除多个Item
+  rpc RemoveItem(RemoveItemReq) returns (RemoveItemRsp) {}
+  //read items 读取Item列表
+  rpc ReadItems(ReadItemsReq) returns (ReadItemsRsp) {}
+  //delete MainKey 删除主Key
+  rpc DeleteKey(DeleteKeyReq) returns (DeleteKeyRsp) {}
 }
 
 //操作类型
@@ -13,25 +22,66 @@ enum OpType {
 
 //Item
 message Item {
-  string Id                     = 1; //唯一ID，一般对应ProductID
-  double SortValue              = 2; //打分值
-  int64  Time                   = 3; //时间戳
-  bool   InvalidUpdateSortValue = 8; //是否更新打分值
-  bool   InvalidUpdateTime      = 9; //是否更新时间戳
+  string Id               = 1; //唯一ID，一般对应ProductID
+  double SortValue        = 2; //打分值
+  int64  Time             = 3; //时间戳
+  bool   InvalidSortValue = 4; //打分值是否无效，默认false更新
+  bool   InvalidTime      = 5; //时间戳是否无效，默认false更新
 }
 
 //AddItem Request
-message AddItemRequest {
-  Item   Item    = 1; //item
-  string MainKey = 2; //主key
-  OpType OpType  = 3; //操作类型
-  string Version = 4; //版本号
+message AddItemReq {
+  repeated Item Item    = 1; //items
+  string        MainKey = 2; //主key
+  OpType        OpType  = 3; //操作类型
+  string        Version = 4; //版本号
 }
 
 //AddItem Response
-message AddItemResponse{
+message AddItemRsp{
   string Id        = 1; //item id
   int32  ItemCount = 2; //item count in bucket
   string Msg       = 3; //return msg
   int32  Ret       = 4; //返回值return code
+}
+
+//RemoveItem Request
+message RemoveItemReq {
+  repeated string Id      = 1; //items id
+  string          MainKey = 2; //主key
+  string          Version = 3; //版本号
+}
+
+//RemoveItem Response
+message RemoveItemRsp {
+  int32  ChangeCount = 1;//发生变更的个数
+  int32  ItemCount   = 2;//item count in bucket
+  string Msg         = 3;//return msg
+  int32  Ret         = 4;//return code
+}
+
+//ReadItems Request
+message ReadItemsReq {
+  string         MainKey     = 1; //主key
+  int32          ItemCount   = 2; //限制长度
+  repeated bytes BloomFilter = 3; //布隆过滤器
+  string         Version     = 4; //版本号
+
+}
+
+//ReadItems Response
+message ReadItemsRsp {
+  repeated Item item = 1; //items
+  string        Msg  = 2; //return msg
+  int32         Ret  = 3; //return code
+}
+
+//DeleteKey Request
+message DeleteKeyReq {
+  string MainKey = 1;
+}
+
+//DeleteKey Response
+message DeleteKeyRsp {
+  int32 Ret = 1; //return code
 }

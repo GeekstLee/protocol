@@ -4,7 +4,7 @@
 // 	protoc        v3.5.0
 // source: index.proto
 
-package proto
+package index
 
 import (
 	context "context"
@@ -77,11 +77,11 @@ type Item struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id                     string  `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id,omitempty"`                                          //唯一ID，一般对应ProductID
-	SortValue              float64 `protobuf:"fixed64,2,opt,name=SortValue,proto3" json:"SortValue,omitempty"`                          //打分值
-	Time                   int64   `protobuf:"varint,3,opt,name=Time,proto3" json:"Time,omitempty"`                                     //时间戳
-	InvalidUpdateSortValue bool    `protobuf:"varint,8,opt,name=InvalidUpdateSortValue,proto3" json:"InvalidUpdateSortValue,omitempty"` //是否更新打分值
-	InvalidUpdateTime      bool    `protobuf:"varint,9,opt,name=InvalidUpdateTime,proto3" json:"InvalidUpdateTime,omitempty"`           //是否更新时间戳
+	Id               string  `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id,omitempty"`                              //唯一ID，一般对应ProductID
+	SortValue        float64 `protobuf:"fixed64,2,opt,name=SortValue,proto3" json:"SortValue,omitempty"`              //打分值
+	Time             int64   `protobuf:"varint,3,opt,name=Time,proto3" json:"Time,omitempty"`                         //时间戳
+	InvalidSortValue bool    `protobuf:"varint,4,opt,name=InvalidSortValue,proto3" json:"InvalidSortValue,omitempty"` //打分值是否无效，默认false更新
+	InvalidTime      bool    `protobuf:"varint,5,opt,name=InvalidTime,proto3" json:"InvalidTime,omitempty"`           //时间戳是否无效，默认false更新
 }
 
 func (x *Item) Reset() {
@@ -137,34 +137,34 @@ func (x *Item) GetTime() int64 {
 	return 0
 }
 
-func (x *Item) GetInvalidUpdateSortValue() bool {
+func (x *Item) GetInvalidSortValue() bool {
 	if x != nil {
-		return x.InvalidUpdateSortValue
+		return x.InvalidSortValue
 	}
 	return false
 }
 
-func (x *Item) GetInvalidUpdateTime() bool {
+func (x *Item) GetInvalidTime() bool {
 	if x != nil {
-		return x.InvalidUpdateTime
+		return x.InvalidTime
 	}
 	return false
 }
 
 //AddItem Request
-type AddItemRequest struct {
+type AddItemReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Item    *Item  `protobuf:"bytes,1,opt,name=Item,proto3" json:"Item,omitempty"`                  //item
-	MainKey string `protobuf:"bytes,2,opt,name=MainKey,proto3" json:"MainKey,omitempty"`            //主key
-	OpType  OpType `protobuf:"varint,3,opt,name=OpType,proto3,enum=OpType" json:"OpType,omitempty"` //操作类型
-	Version string `protobuf:"bytes,4,opt,name=Version,proto3" json:"Version,omitempty"`            //版本号
+	Item    []*Item `protobuf:"bytes,1,rep,name=Item,proto3" json:"Item,omitempty"`                  //items
+	MainKey string  `protobuf:"bytes,2,opt,name=MainKey,proto3" json:"MainKey,omitempty"`            //主key
+	OpType  OpType  `protobuf:"varint,3,opt,name=OpType,proto3,enum=OpType" json:"OpType,omitempty"` //操作类型
+	Version string  `protobuf:"bytes,4,opt,name=Version,proto3" json:"Version,omitempty"`            //版本号
 }
 
-func (x *AddItemRequest) Reset() {
-	*x = AddItemRequest{}
+func (x *AddItemReq) Reset() {
+	*x = AddItemReq{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_index_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -172,13 +172,13 @@ func (x *AddItemRequest) Reset() {
 	}
 }
 
-func (x *AddItemRequest) String() string {
+func (x *AddItemReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AddItemRequest) ProtoMessage() {}
+func (*AddItemReq) ProtoMessage() {}
 
-func (x *AddItemRequest) ProtoReflect() protoreflect.Message {
+func (x *AddItemReq) ProtoReflect() protoreflect.Message {
 	mi := &file_index_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -190,33 +190,33 @@ func (x *AddItemRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddItemRequest.ProtoReflect.Descriptor instead.
-func (*AddItemRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use AddItemReq.ProtoReflect.Descriptor instead.
+func (*AddItemReq) Descriptor() ([]byte, []int) {
 	return file_index_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AddItemRequest) GetItem() *Item {
+func (x *AddItemReq) GetItem() []*Item {
 	if x != nil {
 		return x.Item
 	}
 	return nil
 }
 
-func (x *AddItemRequest) GetMainKey() string {
+func (x *AddItemReq) GetMainKey() string {
 	if x != nil {
 		return x.MainKey
 	}
 	return ""
 }
 
-func (x *AddItemRequest) GetOpType() OpType {
+func (x *AddItemReq) GetOpType() OpType {
 	if x != nil {
 		return x.OpType
 	}
 	return OpType_Upsert
 }
 
-func (x *AddItemRequest) GetVersion() string {
+func (x *AddItemReq) GetVersion() string {
 	if x != nil {
 		return x.Version
 	}
@@ -224,7 +224,7 @@ func (x *AddItemRequest) GetVersion() string {
 }
 
 //AddItem Response
-type AddItemResponse struct {
+type AddItemRsp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -235,8 +235,8 @@ type AddItemResponse struct {
 	Ret       int32  `protobuf:"varint,4,opt,name=Ret,proto3" json:"Ret,omitempty"`             //返回值return code
 }
 
-func (x *AddItemResponse) Reset() {
-	*x = AddItemResponse{}
+func (x *AddItemRsp) Reset() {
+	*x = AddItemRsp{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_index_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -244,13 +244,13 @@ func (x *AddItemResponse) Reset() {
 	}
 }
 
-func (x *AddItemResponse) String() string {
+func (x *AddItemRsp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AddItemResponse) ProtoMessage() {}
+func (*AddItemRsp) ProtoMessage() {}
 
-func (x *AddItemResponse) ProtoReflect() protoreflect.Message {
+func (x *AddItemRsp) ProtoReflect() protoreflect.Message {
 	mi := &file_index_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -262,33 +262,401 @@ func (x *AddItemResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddItemResponse.ProtoReflect.Descriptor instead.
-func (*AddItemResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use AddItemRsp.ProtoReflect.Descriptor instead.
+func (*AddItemRsp) Descriptor() ([]byte, []int) {
 	return file_index_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *AddItemResponse) GetId() string {
+func (x *AddItemRsp) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *AddItemResponse) GetItemCount() int32 {
+func (x *AddItemRsp) GetItemCount() int32 {
 	if x != nil {
 		return x.ItemCount
 	}
 	return 0
 }
 
-func (x *AddItemResponse) GetMsg() string {
+func (x *AddItemRsp) GetMsg() string {
 	if x != nil {
 		return x.Msg
 	}
 	return ""
 }
 
-func (x *AddItemResponse) GetRet() int32 {
+func (x *AddItemRsp) GetRet() int32 {
+	if x != nil {
+		return x.Ret
+	}
+	return 0
+}
+
+//RemoveItem Request
+type RemoveItemReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id      []string `protobuf:"bytes,1,rep,name=Id,proto3" json:"Id,omitempty"`           //items id
+	MainKey string   `protobuf:"bytes,2,opt,name=MainKey,proto3" json:"MainKey,omitempty"` //主key
+	Version string   `protobuf:"bytes,3,opt,name=Version,proto3" json:"Version,omitempty"` //版本号
+}
+
+func (x *RemoveItemReq) Reset() {
+	*x = RemoveItemReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_index_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RemoveItemReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RemoveItemReq) ProtoMessage() {}
+
+func (x *RemoveItemReq) ProtoReflect() protoreflect.Message {
+	mi := &file_index_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RemoveItemReq.ProtoReflect.Descriptor instead.
+func (*RemoveItemReq) Descriptor() ([]byte, []int) {
+	return file_index_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *RemoveItemReq) GetId() []string {
+	if x != nil {
+		return x.Id
+	}
+	return nil
+}
+
+func (x *RemoveItemReq) GetMainKey() string {
+	if x != nil {
+		return x.MainKey
+	}
+	return ""
+}
+
+func (x *RemoveItemReq) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+//RemoveItem Response
+type RemoveItemRsp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ChangeCount int32  `protobuf:"varint,1,opt,name=ChangeCount,proto3" json:"ChangeCount,omitempty"` //发生变更的个数
+	ItemCount   int32  `protobuf:"varint,2,opt,name=ItemCount,proto3" json:"ItemCount,omitempty"`     //item count in bucket
+	Msg         string `protobuf:"bytes,3,opt,name=Msg,proto3" json:"Msg,omitempty"`                  //return msg
+	Ret         int32  `protobuf:"varint,4,opt,name=Ret,proto3" json:"Ret,omitempty"`                 //return code
+}
+
+func (x *RemoveItemRsp) Reset() {
+	*x = RemoveItemRsp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_index_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RemoveItemRsp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RemoveItemRsp) ProtoMessage() {}
+
+func (x *RemoveItemRsp) ProtoReflect() protoreflect.Message {
+	mi := &file_index_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RemoveItemRsp.ProtoReflect.Descriptor instead.
+func (*RemoveItemRsp) Descriptor() ([]byte, []int) {
+	return file_index_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *RemoveItemRsp) GetChangeCount() int32 {
+	if x != nil {
+		return x.ChangeCount
+	}
+	return 0
+}
+
+func (x *RemoveItemRsp) GetItemCount() int32 {
+	if x != nil {
+		return x.ItemCount
+	}
+	return 0
+}
+
+func (x *RemoveItemRsp) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *RemoveItemRsp) GetRet() int32 {
+	if x != nil {
+		return x.Ret
+	}
+	return 0
+}
+
+//ReadItems Request
+type ReadItemsReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MainKey     string   `protobuf:"bytes,1,opt,name=MainKey,proto3" json:"MainKey,omitempty"`         //主key
+	ItemCount   int32    `protobuf:"varint,2,opt,name=ItemCount,proto3" json:"ItemCount,omitempty"`    //限制长度
+	BloomFilter [][]byte `protobuf:"bytes,3,rep,name=BloomFilter,proto3" json:"BloomFilter,omitempty"` //布隆过滤器
+	Version     string   `protobuf:"bytes,4,opt,name=Version,proto3" json:"Version,omitempty"`         //版本号
+}
+
+func (x *ReadItemsReq) Reset() {
+	*x = ReadItemsReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_index_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ReadItemsReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadItemsReq) ProtoMessage() {}
+
+func (x *ReadItemsReq) ProtoReflect() protoreflect.Message {
+	mi := &file_index_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadItemsReq.ProtoReflect.Descriptor instead.
+func (*ReadItemsReq) Descriptor() ([]byte, []int) {
+	return file_index_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ReadItemsReq) GetMainKey() string {
+	if x != nil {
+		return x.MainKey
+	}
+	return ""
+}
+
+func (x *ReadItemsReq) GetItemCount() int32 {
+	if x != nil {
+		return x.ItemCount
+	}
+	return 0
+}
+
+func (x *ReadItemsReq) GetBloomFilter() [][]byte {
+	if x != nil {
+		return x.BloomFilter
+	}
+	return nil
+}
+
+func (x *ReadItemsReq) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+//ReadItems Response
+type ReadItemsRsp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Item []*Item `protobuf:"bytes,1,rep,name=item,proto3" json:"item,omitempty"` //items
+	Msg  string  `protobuf:"bytes,2,opt,name=Msg,proto3" json:"Msg,omitempty"`   //return msg
+	Ret  int32   `protobuf:"varint,3,opt,name=Ret,proto3" json:"Ret,omitempty"`  //return code
+}
+
+func (x *ReadItemsRsp) Reset() {
+	*x = ReadItemsRsp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_index_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ReadItemsRsp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadItemsRsp) ProtoMessage() {}
+
+func (x *ReadItemsRsp) ProtoReflect() protoreflect.Message {
+	mi := &file_index_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadItemsRsp.ProtoReflect.Descriptor instead.
+func (*ReadItemsRsp) Descriptor() ([]byte, []int) {
+	return file_index_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ReadItemsRsp) GetItem() []*Item {
+	if x != nil {
+		return x.Item
+	}
+	return nil
+}
+
+func (x *ReadItemsRsp) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *ReadItemsRsp) GetRet() int32 {
+	if x != nil {
+		return x.Ret
+	}
+	return 0
+}
+
+//DeleteKey Request
+type DeleteKeyReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MainKey string `protobuf:"bytes,1,opt,name=MainKey,proto3" json:"MainKey,omitempty"`
+}
+
+func (x *DeleteKeyReq) Reset() {
+	*x = DeleteKeyReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_index_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteKeyReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteKeyReq) ProtoMessage() {}
+
+func (x *DeleteKeyReq) ProtoReflect() protoreflect.Message {
+	mi := &file_index_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteKeyReq.ProtoReflect.Descriptor instead.
+func (*DeleteKeyReq) Descriptor() ([]byte, []int) {
+	return file_index_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *DeleteKeyReq) GetMainKey() string {
+	if x != nil {
+		return x.MainKey
+	}
+	return ""
+}
+
+//DeleteKey Response
+type DeleteKeyRsp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Ret int32 `protobuf:"varint,1,opt,name=Ret,proto3" json:"Ret,omitempty"` //return code
+}
+
+func (x *DeleteKeyRsp) Reset() {
+	*x = DeleteKeyRsp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_index_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteKeyRsp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteKeyRsp) ProtoMessage() {}
+
+func (x *DeleteKeyRsp) ProtoReflect() protoreflect.Message {
+	mi := &file_index_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteKeyRsp.ProtoReflect.Descriptor instead.
+func (*DeleteKeyRsp) Descriptor() ([]byte, []int) {
+	return file_index_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeleteKeyRsp) GetRet() int32 {
 	if x != nil {
 		return x.Ret
 	}
@@ -298,40 +666,77 @@ func (x *AddItemResponse) GetRet() int32 {
 var File_index_proto protoreflect.FileDescriptor
 
 var file_index_proto_rawDesc = []byte{
-	0x0a, 0x0b, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xae, 0x01,
+	0x0a, 0x0b, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x96, 0x01,
 	0x0a, 0x04, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x02, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x53, 0x6f, 0x72, 0x74, 0x56, 0x61,
 	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x01, 0x52, 0x09, 0x53, 0x6f, 0x72, 0x74, 0x56,
 	0x61, 0x6c, 0x75, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x03, 0x52, 0x04, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x36, 0x0a, 0x16, 0x49, 0x6e, 0x76, 0x61,
-	0x6c, 0x69, 0x64, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x6f, 0x72, 0x74, 0x56, 0x61, 0x6c,
-	0x75, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x08, 0x52, 0x16, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69,
-	0x64, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x6f, 0x72, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65,
-	0x12, 0x2c, 0x0a, 0x11, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x55, 0x70, 0x64, 0x61, 0x74,
-	0x65, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x08, 0x52, 0x11, 0x49, 0x6e, 0x76,
-	0x61, 0x6c, 0x69, 0x64, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x80,
-	0x01, 0x0a, 0x0e, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x19, 0x0a, 0x04, 0x49, 0x74, 0x65, 0x6d, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x05, 0x2e, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x04, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x18, 0x0a, 0x07,
-	0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x4d,
-	0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x1f, 0x0a, 0x06, 0x4f, 0x70, 0x54, 0x79, 0x70, 0x65,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x07, 0x2e, 0x4f, 0x70, 0x54, 0x79, 0x70, 0x65, 0x52,
-	0x06, 0x4f, 0x70, 0x54, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69,
-	0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f,
-	0x6e, 0x22, 0x63, 0x0a, 0x0f, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x02, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x49, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x75, 0x6e,
-	0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x49, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x75,
-	0x6e, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x03, 0x4d, 0x73, 0x67, 0x12, 0x10, 0x0a, 0x03, 0x52, 0x65, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x05, 0x52, 0x03, 0x52, 0x65, 0x74, 0x2a, 0x20, 0x0a, 0x06, 0x4f, 0x70, 0x54, 0x79, 0x70, 0x65,
-	0x12, 0x0a, 0x0a, 0x06, 0x55, 0x70, 0x73, 0x65, 0x72, 0x74, 0x10, 0x00, 0x12, 0x0a, 0x0a, 0x06,
-	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x10, 0x01, 0x32, 0x3e, 0x0a, 0x0c, 0x49, 0x6e, 0x64, 0x65,
-	0x78, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x2e, 0x0a, 0x07, 0x41, 0x64, 0x64, 0x49,
-	0x74, 0x65, 0x6d, 0x12, 0x0f, 0x2e, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x10, 0x2e, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x03, 0x52, 0x04, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x2a, 0x0a, 0x10, 0x49, 0x6e, 0x76, 0x61,
+	0x6c, 0x69, 0x64, 0x53, 0x6f, 0x72, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x10, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x53, 0x6f, 0x72, 0x74, 0x56,
+	0x61, 0x6c, 0x75, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x49, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x54,
+	0x69, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0b, 0x49, 0x6e, 0x76, 0x61, 0x6c,
+	0x69, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x7c, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65,
+	0x6d, 0x52, 0x65, 0x71, 0x12, 0x19, 0x0a, 0x04, 0x49, 0x74, 0x65, 0x6d, 0x18, 0x01, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x05, 0x2e, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x04, 0x49, 0x74, 0x65, 0x6d, 0x12,
+	0x18, 0x0a, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x1f, 0x0a, 0x06, 0x4f, 0x70, 0x54,
+	0x79, 0x70, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x07, 0x2e, 0x4f, 0x70, 0x54, 0x79,
+	0x70, 0x65, 0x52, 0x06, 0x4f, 0x70, 0x54, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x56, 0x65,
+	0x72, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x56, 0x65, 0x72,
+	0x73, 0x69, 0x6f, 0x6e, 0x22, 0x5e, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52,
+	0x73, 0x70, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
+	0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x49, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x49, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x75, 0x6e, 0x74,
+	0x12, 0x10, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x4d,
+	0x73, 0x67, 0x12, 0x10, 0x0a, 0x03, 0x52, 0x65, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x03, 0x52, 0x65, 0x74, 0x22, 0x53, 0x0a, 0x0d, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x49, 0x74,
+	0x65, 0x6d, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x09, 0x52, 0x02, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x12,
+	0x18, 0x0a, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x22, 0x73, 0x0a, 0x0d, 0x52, 0x65, 0x6d,
+	0x6f, 0x76, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x73, 0x70, 0x12, 0x20, 0x0a, 0x0b, 0x43, 0x68,
+	0x61, 0x6e, 0x67, 0x65, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x0b, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x1c, 0x0a, 0x09,
+	0x49, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x09, 0x49, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x4d, 0x73,
+	0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x10, 0x0a, 0x03,
+	0x52, 0x65, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x52, 0x65, 0x74, 0x22, 0x82,
+	0x01, 0x0a, 0x0c, 0x52, 0x65, 0x61, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x12,
+	0x18, 0x0a, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x1c, 0x0a, 0x09, 0x49, 0x74, 0x65,
+	0x6d, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x49, 0x74,
+	0x65, 0x6d, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x20, 0x0a, 0x0b, 0x42, 0x6c, 0x6f, 0x6f, 0x6d,
+	0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0c, 0x52, 0x0b, 0x42, 0x6c,
+	0x6f, 0x6f, 0x6d, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x12, 0x18, 0x0a, 0x07, 0x56, 0x65, 0x72,
+	0x73, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x56, 0x65, 0x72, 0x73,
+	0x69, 0x6f, 0x6e, 0x22, 0x4d, 0x0a, 0x0c, 0x52, 0x65, 0x61, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x73,
+	0x52, 0x73, 0x70, 0x12, 0x19, 0x0a, 0x04, 0x69, 0x74, 0x65, 0x6d, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x05, 0x2e, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x04, 0x69, 0x74, 0x65, 0x6d, 0x12, 0x10,
+	0x0a, 0x03, 0x4d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x4d, 0x73, 0x67,
+	0x12, 0x10, 0x0a, 0x03, 0x52, 0x65, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x52,
+	0x65, 0x74, 0x22, 0x28, 0x0a, 0x0c, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x52,
+	0x65, 0x71, 0x12, 0x18, 0x0a, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x4d, 0x61, 0x69, 0x6e, 0x4b, 0x65, 0x79, 0x22, 0x20, 0x0a, 0x0c,
+	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x52, 0x73, 0x70, 0x12, 0x10, 0x0a, 0x03,
+	0x52, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x52, 0x65, 0x74, 0x2a, 0x20,
+	0x0a, 0x06, 0x4f, 0x70, 0x54, 0x79, 0x70, 0x65, 0x12, 0x0a, 0x0a, 0x06, 0x55, 0x70, 0x73, 0x65,
+	0x72, 0x74, 0x10, 0x00, 0x12, 0x0a, 0x0a, 0x06, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x10, 0x01,
+	0x32, 0xbf, 0x01, 0x0a, 0x0c, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x12, 0x25, 0x0a, 0x07, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x0b, 0x2e, 0x41,
+	0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x71, 0x1a, 0x0b, 0x2e, 0x41, 0x64, 0x64, 0x49,
+	0x74, 0x65, 0x6d, 0x52, 0x73, 0x70, 0x22, 0x00, 0x12, 0x2e, 0x0a, 0x0a, 0x52, 0x65, 0x6d, 0x6f,
+	0x76, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x0e, 0x2e, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x49,
+	0x74, 0x65, 0x6d, 0x52, 0x65, 0x71, 0x1a, 0x0e, 0x2e, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x49,
+	0x74, 0x65, 0x6d, 0x52, 0x73, 0x70, 0x22, 0x00, 0x12, 0x2b, 0x0a, 0x09, 0x52, 0x65, 0x61, 0x64,
+	0x49, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x0d, 0x2e, 0x52, 0x65, 0x61, 0x64, 0x49, 0x74, 0x65, 0x6d,
+	0x73, 0x52, 0x65, 0x71, 0x1a, 0x0d, 0x2e, 0x52, 0x65, 0x61, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x73,
+	0x52, 0x73, 0x70, 0x22, 0x00, 0x12, 0x2b, 0x0a, 0x09, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4b,
+	0x65, 0x79, 0x12, 0x0d, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x52, 0x65,
+	0x71, 0x1a, 0x0d, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x52, 0x73, 0x70,
+	0x22, 0x00, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -347,23 +752,36 @@ func file_index_proto_rawDescGZIP() []byte {
 }
 
 var file_index_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_index_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_index_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_index_proto_goTypes = []interface{}{
-	(OpType)(0),             // 0: OpType
-	(*Item)(nil),            // 1: Item
-	(*AddItemRequest)(nil),  // 2: AddItemRequest
-	(*AddItemResponse)(nil), // 3: AddItemResponse
+	(OpType)(0),           // 0: OpType
+	(*Item)(nil),          // 1: Item
+	(*AddItemReq)(nil),    // 2: AddItemReq
+	(*AddItemRsp)(nil),    // 3: AddItemRsp
+	(*RemoveItemReq)(nil), // 4: RemoveItemReq
+	(*RemoveItemRsp)(nil), // 5: RemoveItemRsp
+	(*ReadItemsReq)(nil),  // 6: ReadItemsReq
+	(*ReadItemsRsp)(nil),  // 7: ReadItemsRsp
+	(*DeleteKeyReq)(nil),  // 8: DeleteKeyReq
+	(*DeleteKeyRsp)(nil),  // 9: DeleteKeyRsp
 }
 var file_index_proto_depIdxs = []int32{
-	1, // 0: AddItemRequest.Item:type_name -> Item
-	0, // 1: AddItemRequest.OpType:type_name -> OpType
-	2, // 2: IndexService.AddItem:input_type -> AddItemRequest
-	3, // 3: IndexService.AddItem:output_type -> AddItemResponse
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 0: AddItemReq.Item:type_name -> Item
+	0, // 1: AddItemReq.OpType:type_name -> OpType
+	1, // 2: ReadItemsRsp.item:type_name -> Item
+	2, // 3: IndexService.AddItem:input_type -> AddItemReq
+	4, // 4: IndexService.RemoveItem:input_type -> RemoveItemReq
+	6, // 5: IndexService.ReadItems:input_type -> ReadItemsReq
+	8, // 6: IndexService.DeleteKey:input_type -> DeleteKeyReq
+	3, // 7: IndexService.AddItem:output_type -> AddItemRsp
+	5, // 8: IndexService.RemoveItem:output_type -> RemoveItemRsp
+	7, // 9: IndexService.ReadItems:output_type -> ReadItemsRsp
+	9, // 10: IndexService.DeleteKey:output_type -> DeleteKeyRsp
+	7, // [7:11] is the sub-list for method output_type
+	3, // [3:7] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_index_proto_init() }
@@ -385,7 +803,7 @@ func file_index_proto_init() {
 			}
 		}
 		file_index_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddItemRequest); i {
+			switch v := v.(*AddItemReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -397,7 +815,79 @@ func file_index_proto_init() {
 			}
 		}
 		file_index_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddItemResponse); i {
+			switch v := v.(*AddItemRsp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_index_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RemoveItemReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_index_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RemoveItemRsp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_index_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ReadItemsReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_index_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ReadItemsRsp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_index_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteKeyReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_index_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteKeyRsp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -415,7 +905,7 @@ func file_index_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_index_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   3,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -442,7 +932,14 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type IndexServiceClient interface {
-	AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*AddItemResponse, error)
+	//add item 添加Item，同个主key可一次添加多个Item
+	AddItem(ctx context.Context, in *AddItemReq, opts ...grpc.CallOption) (*AddItemRsp, error)
+	//delete item 删除Item，同个主Key可一次删除多个Item
+	RemoveItem(ctx context.Context, in *RemoveItemReq, opts ...grpc.CallOption) (*RemoveItemRsp, error)
+	//read items 读取Item列表
+	ReadItems(ctx context.Context, in *ReadItemsReq, opts ...grpc.CallOption) (*ReadItemsRsp, error)
+	//delete MainKey 删除主Key
+	DeleteKey(ctx context.Context, in *DeleteKeyReq, opts ...grpc.CallOption) (*DeleteKeyRsp, error)
 }
 
 type indexServiceClient struct {
@@ -453,9 +950,36 @@ func NewIndexServiceClient(cc grpc.ClientConnInterface) IndexServiceClient {
 	return &indexServiceClient{cc}
 }
 
-func (c *indexServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*AddItemResponse, error) {
-	out := new(AddItemResponse)
+func (c *indexServiceClient) AddItem(ctx context.Context, in *AddItemReq, opts ...grpc.CallOption) (*AddItemRsp, error) {
+	out := new(AddItemRsp)
 	err := c.cc.Invoke(ctx, "/IndexService/AddItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *indexServiceClient) RemoveItem(ctx context.Context, in *RemoveItemReq, opts ...grpc.CallOption) (*RemoveItemRsp, error) {
+	out := new(RemoveItemRsp)
+	err := c.cc.Invoke(ctx, "/IndexService/RemoveItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *indexServiceClient) ReadItems(ctx context.Context, in *ReadItemsReq, opts ...grpc.CallOption) (*ReadItemsRsp, error) {
+	out := new(ReadItemsRsp)
+	err := c.cc.Invoke(ctx, "/IndexService/ReadItems", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *indexServiceClient) DeleteKey(ctx context.Context, in *DeleteKeyReq, opts ...grpc.CallOption) (*DeleteKeyRsp, error) {
+	out := new(DeleteKeyRsp)
+	err := c.cc.Invoke(ctx, "/IndexService/DeleteKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -464,15 +988,31 @@ func (c *indexServiceClient) AddItem(ctx context.Context, in *AddItemRequest, op
 
 // IndexServiceServer is the server API for IndexService service.
 type IndexServiceServer interface {
-	AddItem(context.Context, *AddItemRequest) (*AddItemResponse, error)
+	//add item 添加Item，同个主key可一次添加多个Item
+	AddItem(context.Context, *AddItemReq) (*AddItemRsp, error)
+	//delete item 删除Item，同个主Key可一次删除多个Item
+	RemoveItem(context.Context, *RemoveItemReq) (*RemoveItemRsp, error)
+	//read items 读取Item列表
+	ReadItems(context.Context, *ReadItemsReq) (*ReadItemsRsp, error)
+	//delete MainKey 删除主Key
+	DeleteKey(context.Context, *DeleteKeyReq) (*DeleteKeyRsp, error)
 }
 
 // UnimplementedIndexServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedIndexServiceServer struct {
 }
 
-func (*UnimplementedIndexServiceServer) AddItem(context.Context, *AddItemRequest) (*AddItemResponse, error) {
+func (*UnimplementedIndexServiceServer) AddItem(context.Context, *AddItemReq) (*AddItemRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddItem not implemented")
+}
+func (*UnimplementedIndexServiceServer) RemoveItem(context.Context, *RemoveItemReq) (*RemoveItemRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveItem not implemented")
+}
+func (*UnimplementedIndexServiceServer) ReadItems(context.Context, *ReadItemsReq) (*ReadItemsRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadItems not implemented")
+}
+func (*UnimplementedIndexServiceServer) DeleteKey(context.Context, *DeleteKeyReq) (*DeleteKeyRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteKey not implemented")
 }
 
 func RegisterIndexServiceServer(s *grpc.Server, srv IndexServiceServer) {
@@ -480,7 +1020,7 @@ func RegisterIndexServiceServer(s *grpc.Server, srv IndexServiceServer) {
 }
 
 func _IndexService_AddItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddItemRequest)
+	in := new(AddItemReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -492,7 +1032,61 @@ func _IndexService_AddItem_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/IndexService/AddItem",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IndexServiceServer).AddItem(ctx, req.(*AddItemRequest))
+		return srv.(IndexServiceServer).AddItem(ctx, req.(*AddItemReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IndexService_RemoveItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveItemReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IndexServiceServer).RemoveItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/IndexService/RemoveItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IndexServiceServer).RemoveItem(ctx, req.(*RemoveItemReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IndexService_ReadItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReadItemsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IndexServiceServer).ReadItems(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/IndexService/ReadItems",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IndexServiceServer).ReadItems(ctx, req.(*ReadItemsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IndexService_DeleteKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteKeyReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IndexServiceServer).DeleteKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/IndexService/DeleteKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IndexServiceServer).DeleteKey(ctx, req.(*DeleteKeyReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -504,6 +1098,18 @@ var _IndexService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddItem",
 			Handler:    _IndexService_AddItem_Handler,
+		},
+		{
+			MethodName: "RemoveItem",
+			Handler:    _IndexService_RemoveItem_Handler,
+		},
+		{
+			MethodName: "ReadItems",
+			Handler:    _IndexService_ReadItems_Handler,
+		},
+		{
+			MethodName: "DeleteKey",
+			Handler:    _IndexService_DeleteKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
