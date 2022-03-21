@@ -20,6 +20,11 @@ enum OpType {
   Update = 1; //更新，但是key必须存在
 }
 
+//索引存储value类型
+message IndexValueData {
+  repeated Item Items = 1;
+}
+
 //Item
 message Item {
   string Id               = 1; //唯一ID，一般对应ProductID
