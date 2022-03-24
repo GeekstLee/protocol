@@ -1,0 +1,62 @@
+//推荐系统所有公共定义
+syntax = "proto3";
+
+option go_package = "./common";
+
+//feed id
+enum FEED_ID{
+  FEED_ID_NIL             = 0;//预留
+  FEED_ID_HOME_FEED       = 1;//首页
+  FEED_ID_PRODUCT_DETAIL  = 2;//商品详情页
+  FEED_ID_Personal_CENTER = 3;//个人中心
+}
+
+//action
+enum ACTION {
+  ACTION_NIL        = 0;//预留
+  COLD_START_ACTION = 1;//冷启动
+  HOME_ACTION       = 2;//首页
+  VARIETY_ACTION    = 3;//多样性
+  DEFAULT_ACTION    = 4;//默认
+}
+
+//policy
+enum POLICY{
+  POLICY_DEFAULT        = 0;//预留
+  USER_AGE_RELATED      = 1;//用户年龄关联
+  USER_GENDER_RELATED   = 2;//用户性别关联
+  PRODUCT_CATE_RELATED  = 3;//商品类目关联
+  USER_RELATED          = 4;//用户关联
+  PRODUCT_RELATED       = 5;//商品关联
+  LIKE_RELATED          = 6;//用户喜欢关联
+  CLICK_RELATED         = 7;//过往点击相似
+  BUY_RELATED           = 8;//过往购买相似
+  SHOPPING_CART_RELATED = 9;//购物车相似
+  HOT_SEARCH            = 10;//热搜
+  HOT_LIKE              = 11;//热门喜欢
+  HOT_BUY               = 12;//热门购买
+  USER_SHARE            = 13;//用户分享关联
+  FRIEND_LIKE           = 14;//朋友喜欢
+  FRIEND_CLICK          = 15;//朋友点击
+  FRIEND_BUY            = 16;//朋友购买
+}
+
+//index type
+enum INDEX_TYPE{
+  INDEX_TYPE_NIL      = 0;//预留
+  USER_AGE            = 1;//用户年龄
+  USER_GENDER         = 2;//用户性别
+  USER_CLICK          = 3;//用户点击商品
+  USER_LIKE_SHARE     = 4;//用户分享
+  PRODUCT_FIRST_CATE  = 5;//一级类目
+  PRODUCT_SECOND_CATE = 6;//二级类目
+  HOT_SEARCH_WORD     = 7;//热搜分割词
+  USER_BUY            = 8;//用户曾经购买
+  USER_SHOPPING_CART  = 9;//用户加入购物车
+  HOT_PRODUCT_LIKE    = 10;//商品被喜欢
+  HOT_PRODUCT_BUY     = 11;//商品被购买
+  HOT_PRODUCT_SHARE   = 12;//商品被分享
+  USER_LIKE           = 13;//朋友列表
+  OPERATION_RESOURCE_ = 14;//运营资源位
+  BACK_UP             = 15;//兜底池
+}
