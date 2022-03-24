@@ -1,3 +1,4 @@
+//索引系统服务协议
 syntax = "proto3";
 
 option go_package = "./index";
