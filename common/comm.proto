@@ -43,20 +43,22 @@ enum POLICY{
 
 //index type
 enum INDEX_TYPE{
-  INDEX_TYPE_NIL      = 0;//预留
-  USER_AGE            = 1;//用户年龄
-  USER_GENDER         = 2;//用户性别
-  USER_CLICK          = 3;//用户点击商品
-  USER_LIKE_SHARE     = 4;//用户分享
-  PRODUCT_FIRST_CATE  = 5;//一级类目
-  PRODUCT_SECOND_CATE = 6;//二级类目
-  HOT_SEARCH_WORD     = 7;//热搜分割词
-  USER_BUY            = 8;//用户曾经购买
-  USER_SHOPPING_CART  = 9;//用户加入购物车
-  HOT_PRODUCT_LIKE    = 10;//商品被喜欢
-  HOT_PRODUCT_BUY     = 11;//商品被购买
-  HOT_PRODUCT_SHARE   = 12;//商品被分享
-  USER_LIKE           = 13;//朋友列表
-  OPERATION_RESOURCE_ = 14;//运营资源位
-  BACK_UP             = 15;//兜底池
+  INDEX_TYPE_NIL          = 0;//预留
+  USER_AGE                = 1;//用户年龄
+  USER_GENDER             = 2;//用户性别
+  USER_CLICK              = 3;//用户点击商品
+  USER_LIKE_SHARE         = 4;//用户分享
+  PRODUCT_FIRST_CATE      = 5;//一级类目
+  PRODUCT_SECOND_CATE     = 6;//二级类目
+  HOT_SEARCH_WORD         = 7;//热搜分割词
+  USER_BUY                = 8;//用户曾经购买
+  USER_SHOPPING_CART      = 9;//用户加入购物车
+  HOT_PRODUCT_LIKE        = 10;//商品被喜欢
+  HOT_PRODUCT_BUY         = 11;//商品被购买
+  HOT_PRODUCT_SHARE       = 12;//商品被分享
+  USER_LIKE               = 13;//朋友列表
+  OPERATION_RESOURCE_     = 14;//运营资源位
+  BACK_UP                 = 15;//兜底池
+  TOP_FIRST_CATE_PRODUCT  = 16;//各个一级品类销量榜单
+  TOP_SECOND_CATE_PRODUCT = 17;//各个二级品类销量榜单
 }
