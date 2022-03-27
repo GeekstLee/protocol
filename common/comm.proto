@@ -48,8 +48,8 @@ enum INDEX_TYPE{
   USER_GENDER             = 2;//用户性别
   USER_CLICK              = 3;//用户点击商品
   USER_LIKE_SHARE         = 4;//用户分享
-  PRODUCT_FIRST_CATE      = 5;//一级类目
-  PRODUCT_SECOND_CATE     = 6;//二级类目
+  PRODUCT_FIRST_CATE      = 5;//一级类目销量倒排 全品【DESC】LG_5_#{firstCatId}_DESC
+  PRODUCT_SECOND_CATE     = 6;//二级类目销量倒排 全品【DESC】LG_6_#{secondCatId}_DESC
   HOT_SEARCH_WORD         = 7;//热搜分割词
   USER_BUY                = 8;//用户曾经购买
   USER_SHOPPING_CART      = 9;//用户加入购物车
@@ -57,8 +57,9 @@ enum INDEX_TYPE{
   HOT_PRODUCT_BUY         = 11;//商品被购买
   HOT_PRODUCT_SHARE       = 12;//商品被分享
   USER_LIKE               = 13;//朋友列表
-  OPERATION_RESOURCE_     = 14;//运营资源位
+  OPERATION_RESOURCE      = 14;//运营资源位
   BACK_UP                 = 15;//兜底池
-  TOP_FIRST_CATE_PRODUCT  = 16;//各个一级品类销量榜单
-  TOP_SECOND_CATE_PRODUCT = 17;//各个二级品类销量榜单
+  TOP_FIRST_CATE_PRODUCT  = 16;//各个一级品类销量榜单【DESC】LG_16_#{firstCatId}_DESC cutoff：3600
+  TOP_SECOND_CATE_PRODUCT = 17;//各个二级品类销量榜单【DESC】LG_17_#{secondCatId}_DESC cutoff：1200
+  TOP_ALL_STATION         = 18; //全站热销榜单倒排【DESC】 LG_18_0_DESC cutoff：6000
 }
