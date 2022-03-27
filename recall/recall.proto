@@ -12,7 +12,6 @@ message RecallReq{
   string              FeedID      = 2;//FeedID
   int32               ItemCount   = 3;//召回数量
   int32               TimeOutInMS = 4;//召回超时时间，必须在该时间内返回（无论是否有结果）
-  map<string, string> Extends     = 5;//扩展参数
 
 }
 
@@ -24,5 +23,4 @@ message RecallRsp{
 message RecallItem{
   string              ID      = 1;//item id
   double              Score   = 2;//打分值
-  map<string, string> Extends = 3;//扩展参数
 }
