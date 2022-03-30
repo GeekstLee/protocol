@@ -3,8 +3,6 @@ syntax = "proto3";
 
 option go_package = "./algorithm";
 
-import "recall/recall.proto";
-
 service AlgorithmService{
   //基于用户的协同过滤
   rpc UserCF (UserCFReq) returns (UserCFRsp){}
@@ -13,22 +11,26 @@ service AlgorithmService{
   rpc ItemCF (ItemCFReq) returns(ItemCFRsp){}
 }
 
+message AlgorithmItem {
+  string ID    = 1;//item id
+  double Score = 2;//打分值
+}
 message UserCFReq{
   int32 UserId = 1;//用户ID
 
 }
 message UserCFRsp{
-  repeated RecallItem item = 1;
+  repeated AlgorithmItem item = 1;
 }
 
 message ItemCFReq{
-  repeated RecallItem UserClickItem        = 1; //用户点击
-  repeated RecallItem UserLikeShareItem    = 2; //用户喜欢/分享过的item
-  repeated RecallItem UserShoppingCartItem = 3; //用户购物车中的item
+  repeated AlgorithmItem UserClickItem        = 1; //用户点击
+  repeated AlgorithmItem UserLikeShareItem    = 2; //用户喜欢/分享过的item
+  repeated AlgorithmItem UserShoppingCartItem = 3; //用户购物车中的item
 }
 
 message ItemCFRsp{
-  repeated RecallItem UserClickRelated        = 1; //用户点击相关item
-  repeated RecallItem UserLikeShareRelated    = 2; //用户喜欢/分享相关item
-  repeated RecallItem UserShoppingCartRelated = 3; //用户购物车相关item
+  repeated AlgorithmItem UserClickRelated        = 1; //用户点击相关item
+  repeated AlgorithmItem UserLikeShareRelated    = 2; //用户喜欢/分享相关item
+  repeated AlgorithmItem UserShoppingCartRelated = 3; //用户购物车相关item
 }
