@@ -5,3 +5,6 @@
 protoc --go_out=plugins=grpc:. filePath
 
 如：protoc --go_out=plugins=grpc:. index.proto
+
+
+引用文件：protoc -I=. -I=../ --go_out=plugins=grpc:. algorithm.proto
