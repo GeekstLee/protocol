@@ -13,6 +13,10 @@ service IndexService{
   rpc ReadItems(ReadItemsReq) returns (ReadItemsRsp) {}
   //delete MainKey 删除主Key
   rpc DeleteKey(DeleteKeyReq) returns (DeleteKeyRsp) {}
+  //布隆过滤器：写入
+  rpc WriteBloomFilter(WriteBloomFilterReq) returns(WriteBloomFilterRsp){}
+  //布隆过滤器：读出
+  rpc ReadBloomFilter(ReadBloomFilterReq) returns (ReadBloomFilterRsp){}
 }
 
 //操作类型
@@ -90,4 +94,28 @@ message DeleteKeyReq {
 //DeleteKey Response
 message DeleteKeyRsp {
   int32 Ret = 1; //return code
+}
+
+//Write BloomFilter Request
+message WriteBloomFilterReq{
+  string          UserID  = 1; //user id
+  repeated string ItemIds = 2; //item id list
+}
+
+//Write BloomFilter Response
+message WriteBloomFilterRsp{
+  int32  Ret = 1;
+  string Msg = 2;
+}
+
+//Read BloomFilter Request
+message ReadBloomFilterReq{
+  string UserID = 1;
+}
+
+//Read BloomFilter Response
+message ReadBloomFilterRsp{
+  repeated bytes BloomFilter = 1; //布隆过滤器
+  int32          Ret         = 2;
+  string         Msg         = 3;
 }
