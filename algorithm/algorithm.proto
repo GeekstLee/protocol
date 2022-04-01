@@ -4,10 +4,10 @@ syntax = "proto3";
 option go_package = "./algorithm";
 
 service AlgorithmService{
-  //基于用户的协同过滤
+  //基于用户的协同过滤，返回相似用户列表
   rpc UserCF (UserCFReq) returns (UserCFRsp){}
 
-  //基于Item的协同过滤
+  //基于Item的协同过滤，返回相似Item列表
   rpc ItemCF (ItemCFReq) returns(ItemCFRsp){}
 }
 
@@ -15,22 +15,19 @@ message AlgorithmItem {
   string ID    = 1;//item id
   double Score = 2;//打分值
 }
+
 message UserCFReq{
   int32 UserId = 1;//用户ID
 
 }
 message UserCFRsp{
-  repeated AlgorithmItem item = 1;
+  repeated string relatedUsers = 1;
 }
 
 message ItemCFReq{
-  repeated AlgorithmItem UserClickItem        = 1; //用户点击
-  repeated AlgorithmItem UserLikeShareItem    = 2; //用户喜欢/分享过的item
-  repeated AlgorithmItem UserShoppingCartItem = 3; //用户购物车中的item
+  repeated AlgorithmItem items = 1;
 }
 
 message ItemCFRsp{
-  repeated AlgorithmItem UserClickRelated        = 1; //用户点击相关item
-  repeated AlgorithmItem UserLikeShareRelated    = 2; //用户喜欢/分享相关item
-  repeated AlgorithmItem UserShoppingCartRelated = 3; //用户购物车相关item
+  repeated AlgorithmItem relatedItems = 1; //相关item
 }
