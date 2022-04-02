@@ -98,7 +98,7 @@ message DeleteKeyRsp {
 
 //布隆过滤器编解码存储value类型
 message BloomFilterValueData {
-  repeated bytes BloomFilters = 1;
+  bytes BloomFilters = 1;
 }
 
 //Write BloomFilter Request
