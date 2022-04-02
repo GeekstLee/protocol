@@ -96,6 +96,11 @@ message DeleteKeyRsp {
   int32 Ret = 1; //return code
 }
 
+//布隆过滤器编解码存储value类型
+message BloomFilterValueData {
+  repeated bytes BloomFilters = 1;
+}
+
 //Write BloomFilter Request
 message WriteBloomFilterReq{
   string          UserID  = 1; //user id
@@ -115,7 +120,7 @@ message ReadBloomFilterReq{
 
 //Read BloomFilter Response
 message ReadBloomFilterRsp{
-  repeated bytes BloomFilter = 1; //布隆过滤器
-  int32          Ret         = 2;
-  string         Msg         = 3;
+  repeated bytes BloomFilters = 1; //布隆过滤器
+  int32          Ret          = 2;
+  string         Msg          = 3;
 }
