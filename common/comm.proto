@@ -53,7 +53,7 @@ enum INDEX_TYPE{
   HOT_PRODUCT_LIKE        = 10;//商品被喜欢（打分倒排）【DESC】LG_10_0_DESC
   HOT_PRODUCT_BUY         = 11;//商品被购买（打分倒排）【DESC】LG_11_0_DESC
   HOT_PRODUCT_SHARE       = 12;//商品被分享（打分倒排）【DESC】LG_12_0_DESC
-  USER_LIKE               = 13;//朋友列表（时间倒排）【DESC】LG_13_#{UserID}_DESC
+  USER_FRIEND_LIST        = 13;//朋友列表（时间倒排）【DESC】LG_13_#{UserID}_DESC
   OPERATION_RESOURCE      = 14;//运营资源位（打分倒排）【DESC】 LG_14_0_DESC
   BACK_UP                 = 15;//兜底池（打分倒排）【DESC】LG_15_0_DESC
   TOP_FIRST_CATE_PRODUCT  = 16;//一级品类热销榜单【DESC】LG_16_#{firstCatId}_DESC cutoff：3600
