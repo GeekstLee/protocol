@@ -40,23 +40,25 @@ enum POLICY{
 
 //index type
 enum INDEX_TYPE{
-  INDEX_TYPE_NIL          = 0;//预留
-  USER_AGE                = 1;//用户年龄
-  USER_GENDER             = 2;//用户性别
-  USER_CLICK              = 3;//用户点击商品（时间倒排）【DESC】LG_3_#{UserID}_DESC
-  USER_LIKE_SHARE         = 4;//用户喜欢/分享（时间倒排）【DESC】LG_4_#{UserID}_DESC
-  PRODUCT_FIRST_CATE      = 5;//一级类目销量倒排 全品【DESC】LG_5_#{firstCatId}_DESC
-  PRODUCT_SECOND_CATE     = 6;//二级类目销量倒排 全品【DESC】LG_6_#{secondCatId}_DESC
-  HOT_SEARCH_WORD         = 7;//热搜分割词
-  USER_BUY                = 8;//用户曾经购买（时间倒排）【DESC】LG_8_#{UserID}_DESC
-  USER_SHOPPING_CART      = 9;//用户加入购物车（时间倒排）【DESC】LG_9_#{UserID}_DESC
-  HOT_PRODUCT_LIKE        = 10;//商品被喜欢（打分倒排）【DESC】LG_10_0_DESC
-  HOT_PRODUCT_BUY         = 11;//商品被购买（打分倒排）【DESC】LG_11_0_DESC
-  HOT_PRODUCT_SHARE       = 12;//商品被分享（打分倒排）【DESC】LG_12_0_DESC
-  USER_FRIEND_LIST        = 13;//朋友列表（时间倒排）【DESC】LG_13_#{UserID}_DESC
-  OPERATION_RESOURCE      = 14;//运营资源位（打分倒排）【DESC】 LG_14_0_DESC
-  BACK_UP                 = 15;//兜底池（打分倒排）【DESC】LG_15_0_DESC
-  TOP_FIRST_CATE_PRODUCT  = 16;//一级品类热销榜单【DESC】LG_16_#{firstCatId}_DESC cutoff：3600
-  TOP_SECOND_CATE_PRODUCT = 17;//二级品类热销榜单【DESC】LG_17_#{secondCatId}_DESC cutoff：1200
-  TOP_ALL_STATION         = 18; //全站热销榜单倒排【DESC】 LG_18_0_DESC cutoff：6000
+  INDEX_TYPE_NIL            = 0;//预留
+  USER_AGE                  = 1;//用户年龄
+  USER_GENDER               = 2;//用户性别
+  USER_CLICK                = 3;//用户点击商品（时间倒排）【DESC】LG_3_#{UserID}_DESC
+  USER_LIKE_SHARE           = 4;//用户喜欢/分享（时间倒排）【DESC】LG_4_#{UserID}_DESC
+  PRODUCT_FIRST_CATE        = 5;//一级类目销量倒排 全品【DESC】LG_5_#{firstCatId}_DESC
+  PRODUCT_SECOND_CATE       = 6;//二级类目销量倒排 全品【DESC】LG_6_#{secondCatId}_DESC
+  HOT_SEARCH_WORD           = 7;//热搜分割词
+  USER_BUY                  = 8;//用户曾经购买（时间倒排）【DESC】LG_8_#{UserID}_DESC
+  USER_SHOPPING_CART        = 9;//用户加入购物车（时间倒排）【DESC】LG_9_#{UserID}_DESC
+  HOT_PRODUCT_LIKE          = 10;//商品被喜欢（打分倒排）【DESC】LG_10_0_DESC
+  HOT_PRODUCT_BUY           = 11;//商品被购买（打分倒排）【DESC】LG_11_0_DESC
+  HOT_PRODUCT_SHARE         = 12;//商品被分享（打分倒排）【DESC】LG_12_0_DESC
+  USER_FRIEND_LIST          = 13;//朋友列表（时间倒排）【DESC】LG_13_#{UserID}_DESC
+  OPERATION_RESOURCE        = 14;//运营资源位（打分倒排）【DESC】 LG_14_0_DESC
+  BACK_UP                   = 15;//兜底池（打分倒排）【DESC】LG_15_0_DESC
+  TOP_FIRST_CATE_PRODUCT    = 16;//一级品类热销榜单【DESC】LG_16_#{firstCatId}_DESC cutoff：3600
+  TOP_SECOND_CATE_PRODUCT   = 17;//二级品类热销榜单【DESC】LG_17_#{secondCatId}_DESC cutoff：1200
+  TOP_ALL_STATION           = 18;//全站热销榜单倒排【DESC】 LG_18_0_DESC cutoff：6000
+  FRIEND_LIKE_SHARE_PRODUCT = 19;//朋友喜欢/分享过的商品（时间倒排）【DESC】 LG_19_#{UserID}_DESC
+  FRIEND_BUY_PRODUCT        = 20;//朋友购买过的商品（时间倒排）【DESC】 LG_20_#{UserID}_DESC
 }
