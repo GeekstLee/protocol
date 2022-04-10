@@ -5,10 +5,10 @@ option go_package = "./common";
 
 //feed id
 enum FEED_ID{
-  FEED_ID_NIL             = 0;//预留
-  FEED_ID_HOME_FEED       = 1;//首页
-  FEED_ID_PRODUCT_DETAIL  = 2;//商品详情页
-  FEED_ID_Personal_CENTER = 3;//个人中心
+  FEED_NIL        = 0;//预留
+  HOME_FEED       = 1;//首页
+  PRODUCT_DETAIL  = 2;//商品详情页
+  Personal_CENTER = 3;//个人中心
 }
 
 //action
@@ -26,19 +26,16 @@ enum POLICY{
   USER_AGE_RELATED      = 1;//用户年龄关联
   USER_GENDER_RELATED   = 2;//用户性别关联
   PRODUCT_CATE_RELATED  = 3;//商品类目关联
-  USER_RELATED          = 4;//用户关联
-  PRODUCT_RELATED       = 5;//商品关联
-  LIKE_RELATED          = 6;//用户喜欢关联
-  CLICK_RELATED         = 7;//过往点击相似
-  BUY_RELATED           = 8;//过往购买相似
+  USER_RELATED          = 4;//u2u用户关联
+  PRODUCT_RELATED       = 5;//i2i商品关联
+  LIKE_SHARE_RELATED    = 6;//用户喜欢/分享关联
+  CLICK_RELATED         = 7;//点击相似
+  BUY_RELATED           = 8;//购买相似
   SHOPPING_CART_RELATED = 9;//购物车相似
   HOT_SEARCH            = 10;//热搜
-  HOT_LIKE              = 11;//热门喜欢
+  HOT_LIKE              = 11;//热门喜欢/分享
   HOT_BUY               = 12;//热门购买
-  USER_SHARE            = 13;//用户分享关联
-  FRIEND_LIKE           = 14;//朋友喜欢
-  FRIEND_CLICK          = 15;//朋友点击
-  FRIEND_BUY            = 16;//朋友购买
+  Novelty_KEEP          = 13;//新颖性保证
 }
 
 //index type
@@ -46,20 +43,20 @@ enum INDEX_TYPE{
   INDEX_TYPE_NIL          = 0;//预留
   USER_AGE                = 1;//用户年龄
   USER_GENDER             = 2;//用户性别
-  USER_CLICK              = 3;//用户点击商品
-  USER_LIKE_SHARE         = 4;//用户分享
+  USER_CLICK              = 3;//用户点击商品（时间倒排）【DESC】LG_3_#{UserID}_DESC
+  USER_LIKE_SHARE         = 4;//用户喜欢/分享（时间倒排）【DESC】LG_4_#{UserID}_DESC
   PRODUCT_FIRST_CATE      = 5;//一级类目销量倒排 全品【DESC】LG_5_#{firstCatId}_DESC
   PRODUCT_SECOND_CATE     = 6;//二级类目销量倒排 全品【DESC】LG_6_#{secondCatId}_DESC
   HOT_SEARCH_WORD         = 7;//热搜分割词
-  USER_BUY                = 8;//用户曾经购买
-  USER_SHOPPING_CART      = 9;//用户加入购物车
-  HOT_PRODUCT_LIKE        = 10;//商品被喜欢
-  HOT_PRODUCT_BUY         = 11;//商品被购买
-  HOT_PRODUCT_SHARE       = 12;//商品被分享
-  USER_LIKE               = 13;//朋友列表
-  OPERATION_RESOURCE      = 14;//运营资源位
-  BACK_UP                 = 15;//兜底池
-  TOP_FIRST_CATE_PRODUCT  = 16;//各个一级品类销量榜单【DESC】LG_16_#{firstCatId}_DESC cutoff：3600
-  TOP_SECOND_CATE_PRODUCT = 17;//各个二级品类销量榜单【DESC】LG_17_#{secondCatId}_DESC cutoff：1200
+  USER_BUY                = 8;//用户曾经购买（时间倒排）【DESC】LG_8_#{UserID}_DESC
+  USER_SHOPPING_CART      = 9;//用户加入购物车（时间倒排）【DESC】LG_9_#{UserID}_DESC
+  HOT_PRODUCT_LIKE        = 10;//商品被喜欢（打分倒排）【DESC】LG_10_0_DESC
+  HOT_PRODUCT_BUY         = 11;//商品被购买（打分倒排）【DESC】LG_11_0_DESC
+  HOT_PRODUCT_SHARE       = 12;//商品被分享（打分倒排）【DESC】LG_12_0_DESC
+  USER_LIKE               = 13;//朋友列表（时间倒排）【DESC】LG_13_#{UserID}_DESC
+  OPERATION_RESOURCE      = 14;//运营资源位（打分倒排）【DESC】 LG_14_0_DESC
+  BACK_UP                 = 15;//兜底池（打分倒排）【DESC】LG_15_0_DESC
+  TOP_FIRST_CATE_PRODUCT  = 16;//一级品类热销榜单【DESC】LG_16_#{firstCatId}_DESC cutoff：3600
+  TOP_SECOND_CATE_PRODUCT = 17;//二级品类热销榜单【DESC】LG_17_#{secondCatId}_DESC cutoff：1200
   TOP_ALL_STATION         = 18; //全站热销榜单倒排【DESC】 LG_18_0_DESC cutoff：6000
 }
